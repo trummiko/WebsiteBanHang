@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security5"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}">
 <head>
@@ -12,7 +13,7 @@
 </head>
 <body>
 <section layout:fragment="content" class="container mt-5">
-    <h1 class="mb-4">Login</h1>
+    <h1 class="mb-4">Register Form</h1>
     <form th:action="@{/register}" method="post">
         <div th:if="${errors}" class="alert alert-danger justify-content-center"
              role="alert">

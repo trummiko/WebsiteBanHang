@@ -1,10 +1,10 @@
 package Java_Project.WebsiteBanHang.Service;
 
 
-import Java_Project.WebsiteBanHang.Model.Role;
+import Java_Project.WebsiteBanHang.Role;
 import Java_Project.WebsiteBanHang.Model.User;
-import Java_Project.WebsiteBanHang.Repository.IRoleRepository;
-import Java_Project.WebsiteBanHang.Repository.IUserRepository;
+import Java_Project.WebsiteBanHang.Repository.RoleRepository;
+import Java_Project.WebsiteBanHang.Repository.UserRepository;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,24 +20,21 @@ import java.util.Optional;
 @Transactional
 public class UserService implements UserDetailsService {
     @Autowired
-    private IUserRepository userRepository;
+    private UserRepository userRepository;
     @Autowired
-    private IRoleRepository roleRepository;
-    // Lưu người dùng mới vào cơ sở dữ liệu sau khi mã hóa mật khẩu.
+    private RoleRepository roleRepository;
     public void save(@NotNull User user) {
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         userRepository.save(user);
     }
-    // Gán vai trò mặc định cho người dùng dựa trên tên người dùng.
     public void setDefaultRole(String username) {
         userRepository.findByUsername(username).ifPresentOrElse(
                 user -> {
-                    user.getRoles().add(roleRepository.findRoleById(Role.RoleBuilder.class));
+                    user.getRoles().add(roleRepository.findRoleById(Role.USER.value));
                     userRepository.save(user);
                 },
                 () -> { throw new UsernameNotFoundException("User not found"); }
         );}
-    // Tải thông tin chi tiết người dùng để xác thực.
     @Override
     public UserDetails loadUserByUsername(String username) throws
             UsernameNotFoundException {
@@ -53,7 +50,6 @@ public class UserService implements UserDetailsService {
                 .disabled(!user.isEnabled())
                 .build();
     }
-    // Tìm kiếm người dùng dựa trên tên đăng nhập.
     public Optional<User> findByUsername(String username) throws
             UsernameNotFoundException {
         return userRepository.findByUsername(username);
