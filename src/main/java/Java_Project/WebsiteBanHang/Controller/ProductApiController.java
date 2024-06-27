@@ -1,14 +1,12 @@
 package Java_Project.WebsiteBanHang.Controller;
 
-
-
 import Java_Project.WebsiteBanHang.Model.Product;
-import Java_Project.WebsiteBanHang.Repository.ProductRepository;
+//import Java_Project.WebsiteBanHang.Repository.ProductRepository;
 import Java_Project.WebsiteBanHang.Service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-        import java.util.List;
+import java.util.List;
 @CrossOrigin
 @RestController
 @RequestMapping("/api/products")
